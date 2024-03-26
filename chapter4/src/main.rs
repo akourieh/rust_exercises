@@ -1,3 +1,5 @@
+
+// 1. Luhn algorithm
 fn sum_digits(x: i64) -> i64 {
     (x % 10) + (0..)
         .scan(x, |num, _| {
@@ -61,6 +63,52 @@ fn test_invalid_cc_number() {
     assert!(!luhn("4223 9826 4026 9299"));
     assert!(!luhn("4539 3195 0343 6476"));
     assert!(!luhn("8273 1232 7352 0569"));
+}
+
+// 2. Strings and Iterators
+
+pub fn prefix_matches(prefix: &str, request_path: &str) -> bool {
+    let prefix_v: Vec<&str> = prefix.split("/").collect();
+    let request_v: Vec<&str> = request_path.split("/").collect();
+    for (pos, e) in prefix_v.iter().enumerate() {
+        if request_v.get(pos) != Option::from(e) && *e != "*" {
+            return false;
+        }
+    }
+    return true;
+}
+
+#[test]
+fn test_matches_without_wildcard() {
+    assert!(prefix_matches("/v1/publishers", "/v1/publishers"));
+    assert!(prefix_matches("/v1/publishers", "/v1/publishers/abc-123"));
+    assert!(prefix_matches("/v1/publishers", "/v1/publishers/abc/books"));
+
+    assert!(!prefix_matches("/v1/publishers", "/v1"));
+    assert!(!prefix_matches("/v1/publishers", "/v1/publishersBooks"));
+    assert!(!prefix_matches("/v1/publishers", "/v1/parent/publishers"));
+}
+
+#[test]
+fn test_matches_with_wildcard() {
+    assert!(prefix_matches(
+        "/v1/publishers/*/books",
+        "/v1/publishers/foo/books"
+    ));
+    assert!(prefix_matches(
+        "/v1/publishers/*/books",
+        "/v1/publishers/bar/books"
+    ));
+    assert!(prefix_matches(
+        "/v1/publishers/*/books",
+        "/v1/publishers/foo/books/book1"
+    ));
+
+    assert!(!prefix_matches("/v1/publishers/*/books", "/v1/publishers"));
+    assert!(!prefix_matches(
+        "/v1/publishers/*/books",
+        "/v1/publishers/foo/booksByAuthor"
+    ));
 }
 
 fn main() {}
