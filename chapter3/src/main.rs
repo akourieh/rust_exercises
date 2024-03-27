@@ -77,11 +77,10 @@ impl Point {
 }
 
 impl std::ops::Add<Point> for Point {
-    type Output = Point;
+    type Output = Self;
 
-    fn add(self, _rhs: Point) -> Point {
-        Point {x: self.x + _rhs.x,
-            y: self.y + _rhs.y }
+    fn add(self, other: Self) -> Self {
+        Self {x: self.x + other.x, y: self.y + other.y}
     }
 }
 
