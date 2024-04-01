@@ -1,5 +1,5 @@
 /*
-* Dining Philosophers Problem : Solution from https://google.github.io/comprehensive-rust/exercises/concurrency/solutions-morning.html
+* Dining Philosophers Problem : Solution from https://google.github.io/comprehensive-rust/exercises/concurrency/solutions-morning.html#dining-philosophers
 */
 use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
